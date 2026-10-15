@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна 1 - Завдання 3</title>
+</head>
+<body>
+    <script>
+        'use strict';
+        console.log('Starting task 3 (Variant 17)');
+        
+        const x = 1; 
+        let y;
+        
+        if (x > -Math.PI/2 && x < Math.PI/2) {
+            y = Math.pow(Math.tan(x), 2);
+        } else if (x <= -Math.PI/2 || x >= Math.PI/2) {
+            y = 0;
+        } else {
+            console.log('Умова не виконана');
+        }
+        
+        console.log("x =", x, ", y =", y);
+    </script>
+</body>
+</html>

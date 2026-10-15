@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна 1 - Завдання 2</title>
+</head>
+<body>
+    <script>
+        'use strict';
+        console.log('Starting task 2 (Variant 17)');
+        const alpha = 1.73;
+        
+        const y = Math.sqrt(Math.abs(alpha + 2));
+        const x = Math.pow(Math.sin(y), 3) - y;
+        const beta1 = Math.acos(x - 1) + Math.pow(Math.log10(Math.abs(x)), 2);
+        
+        console.log("alpha =", alpha);
+        console.log("y =", y);
+        console.log("x =", x);
+        console.log("beta1 =", beta1);
+    </script>
+</body>
+</html>
