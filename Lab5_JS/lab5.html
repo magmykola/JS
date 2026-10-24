@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Лабораторна робота 5 - Варіант 17</title>
+</head>
+<body>
+    <h1>Лабораторна робота №5 (Варіант 17: Зоопарк)</h1>
+    <p>Відкрийте консоль розробника (F12), щоб побачити результати виконання.</p>
+    
+    <script>
+        // Завдання 1: Реалізація класу ApiRepository
+        class ApiRepository {
+            #baseUrl;
+            #type;
+            constructor(baseUrl, type) {
+                this.#baseUrl = baseUrl;
+                this.#type = type;
+            }
+            async create(item) {
+                const response = await fetch(`${this.#baseUrl}?type=${this.#type}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(item),
+                });
+                if (!response.ok) throw new Error(`Помилка створення: ${response.status}`);
+                return response.json();
+            }
+            async readById(id) {
+                const response = await fetch(`${this.#baseUrl}?type=${this.#type}&id=${id}`);
+                if (!response.ok) throw new Error(`Помилка завантаження: ${response.status}`);
+                return response.json();
+            }
+            async readAll() {
+                const response = await fetch(`${this.#baseUrl}?type=${this.#type}`);
+                if (!response.ok) throw new Error(`Помилка завантаження: ${response.status}`);
+                return response.json();
+            }
+            async update(id, changes) {
+                const response = await fetch(`${this.#baseUrl}?type=${this.#type}&id=${id}`, {
+                    method: "PATCH",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(changes),
+                });
+                if (!response.ok) throw new Error(`Помилка оновлення: ${response.status}`);
+                return response.json();
+            }
+            async delete(id) {
+                const response = await fetch(`${this.#baseUrl}?type=${this.#type}&id=${id}`, {
+                    method: "DELETE",
+                });
+                if (!response.ok) throw new Error(`Помилка видалення: ${response.status}`);
+                return response.json();
+            }
+        }
+
+        const API_BASE_URL = "http://localhost/mock-server/api.php";
+
+        // Завдання 2: Створення трьох екземплярів з унікальними type
+        const speciesRepo = new ApiRepository(API_BASE_URL, "species_var17");
+        const enclosureRepo = new ApiRepository(API_BASE_URL, "enclosure_var17");
+        const placementRepo = new ApiRepository(API_BASE_URL, "placement_var17");
+
+        // Головна функція демонстрації (Наскрізний цикл)
+        async function runDemo() {
+            try {
+                console.log("=== ЗАВДАННЯ 3: Створення об'єктів (Create) ===");
+                // Створення видів
+                await speciesRepo.create({ name: "Лев", family: "Котячі", lifespan: 15, habitat: "Савана" });
+                await speciesRepo.create({ name: "Слон", family: "Слонові", lifespan: 70, habitat: "Тропіки" });
+                await speciesRepo.create({ name: "Пінгвін", family: "Пінгвінові", lifespan: 20, habitat: "Антарктида" });
+
+                // Створення приміщень
+                await enclosureRepo.create({ complexName: "Хижаки", roomNumber: 101, hasPool: false, area: 500 });
+                await enclosureRepo.create({ complexName: "Савана", roomNumber: 102, hasPool: true, area: 2000 });
+                await enclosureRepo.create({ complexName: "Північ", roomNumber: 103, hasPool: true, area: 300 });
+
+                // Читання та вивід
+                const speciesList = await speciesRepo.readAll();
+                const enclosureList = await enclosureRepo.readAll();
+
+                console.log("Види (readAll):", speciesList);
+                console.log("Приміщення (readAll):", enclosureList);
+
+                // Створення розміщень
+                if (speciesList.length >= 3 && enclosureList.length >= 3) {
+                    await placementRepo.create({ animalCount: 4, placementDate: "2026-05-10", condition: "Відмінний", speciesId: speciesList[0].id, enclosureId: enclosureList[0].id });
+                    await placementRepo.create({ animalCount: 2, placementDate: "2026-06-15", condition: "Задовільний", speciesId: speciesList[1].id, enclosureId: enclosureList[1].id });
+                    await placementRepo.create({ animalCount: 15, placementDate: "2026-08-20", condition: "Потребує ремонту", speciesId: speciesList[2].id, enclosureId: enclosureList[2].id });
+                }
+
+                const placementList = await placementRepo.readAll();
+                console.log("Розміщення (readAll):", placementList);
+
+                console.log("\n=== ЗАВДАННЯ 4: Update та Delete ===");
+                if (speciesList.length >= 2) {
+                    const updatedSpecies = await speciesRepo.update(speciesList[0].id, { lifespan: 25, habitat: "Заповідник" });
+                    console.log("Оновлено вид:", updatedSpecies);
+
+                    await speciesRepo.delete(speciesList[1].id);
+                    console.log(`Видалено вид з id: ${speciesList[1].id}`);
+                }
+
+                if (enclosureList.length >= 2) {
+                    const updatedEnclosure = await enclosureRepo.update(enclosureList[0].id, { area: 1000, hasPool: true });
+                    console.log("Оновлено приміщення:", updatedEnclosure);
+
+                    await enclosureRepo.delete(enclosureList[1].id);
+                    console.log(`Видалено приміщення з id: ${enclosureList[1].id}`);
+                }
+
+                console.log("\n=== ЗАВДАННЯ 5: Зв'язок 'Багато до багатьох' ===");
+                // Створюємо нові дані для гарантованого спільного зв'язку
+                const testSpecies1 = await speciesRepo.create({ name: "Тигр", family: "Котячі", lifespan: 12, habitat: "Джунглі" });
+                const testSpecies2 = await speciesRepo.create({ name: "Пантера", family: "Котячі", lifespan: 14, habitat: "Джунглі" });
+                const sharedEnclosure = await enclosureRepo.create({ complexName: "Великі Котячі", roomNumber: 201, hasPool: true, area: 1200 });
+                
+                await placementRepo.create({ animalCount: 2, placementDate: "2026-10-01", condition: "Відмінний", speciesId: testSpecies1.id, enclosureId: sharedEnclosure.id });
+                await placementRepo.create({ animalCount: 3, placementDate: "2026-10-02", condition: "Відмінний", speciesId: testSpecies2.id, enclosureId: sharedEnclosure.id });
+
+                // Завантажуємо оновлені дані з сервера
+                const finalSpecies = await speciesRepo.readAll();
+                const finalPlacements = await placementRepo.readAll();
+
+                console.log(`Шукаємо всі розміщення для приміщення '${sharedEnclosure.complexName}' (ID: ${sharedEnclosure.id}):`);
+                
+                for (const placement of finalPlacements) {
+                    if (placement.enclosureId === sharedEnclosure.id) {
+                        const relatedSpecies = finalSpecies.find(s => s.id === placement.speciesId);
+                        if (relatedSpecies) {
+                            console.log(`- Знайдено: Вид '${relatedSpecies.name}' (К-ть тварин: ${placement.animalCount}), Стан вольєру: ${placement.condition}`);
+                        }
+                    }
+                }
+
+            } catch (error) {
+                console.error("Сталася помилка під час виконання:", error.message);
+            }
+        }
+
+        runDemo();
+    </script>
+</body>
+</html>

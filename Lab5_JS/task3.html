@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Завдання 3</title>
+</head>
+<body>
+    <h1>Завдання 3: Create та ReadAll</h1>
+    <script>
+        
+        const API_BASE_URL = "http://localhost/mock-server/api.php";
+        const speciesRepo = new ApiRepository(API_BASE_URL, "species_var17");
+        const enclosureRepo = new ApiRepository(API_BASE_URL, "enclosure_var17");
+        const placementRepo = new ApiRepository(API_BASE_URL, "placement_var17");
+
+        async function task3() {
+            try {
+                // Створення видів
+                await speciesRepo.create({ name: "Лев", family: "Котячі", lifespan: 15, habitat: "Савана" });
+                await speciesRepo.create({ name: "Слон", family: "Слонові", lifespan: 70, habitat: "Тропіки" });
+                await speciesRepo.create({ name: "Пінгвін", family: "Пінгвінові", lifespan: 20, habitat: "Антарктида" });
+
+                // Створення приміщень
+                await enclosureRepo.create({ complexName: "Хижаки", roomNumber: 101, hasPool: false, area: 500 });
+                await enclosureRepo.create({ complexName: "Савана", roomNumber: 102, hasPool: true, area: 2000 });
+                await enclosureRepo.create({ complexName: "Північ", roomNumber: 103, hasPool: true, area: 300 });
+
+                // Отримання ID для розміщення
+                const species = await speciesRepo.readAll();
+                const enclosures = await enclosureRepo.readAll();
+
+                // Створення розміщень
+                if(species.length >= 3 && enclosures.length >= 3) {
+                    await placementRepo.create({ animalCount: 4, placementDate: "2026-05-10", condition: "Відмінний", speciesId: species[0].id, enclosureId: enclosures[0].id });
+                    await placementRepo.create({ animalCount: 2, placementDate: "2026-06-15", condition: "Задовільний", speciesId: species[1].id, enclosureId: enclosures[1].id });
+                    await placementRepo.create({ animalCount: 15, placementDate: "2026-08-20", condition: "Потребує ремонту", speciesId: species[2].id, enclosureId: enclosures[2].id });
+                }
+
+                // Вивід усіх записів
+                console.log("--- Усі Види ---");
+                const allSpecies = await speciesRepo.readAll();
+                allSpecies.forEach(s => console.log(s));
+
+                console.log("--- Усі Приміщення ---");
+                const allEnclosures = await enclosureRepo.readAll();
+                allEnclosures.forEach(e => console.log(e));
+
+                console.log("--- Усі Розміщення ---");
+                const allPlacements = await placementRepo.readAll();
+                allPlacements.forEach(p => console.log(p));
+
+            } catch (error) {
+                console.error("Помилка у завданні 3:", error.message);
+            }
+        }
+        task3();
+    </script>
+</body>
+</html>

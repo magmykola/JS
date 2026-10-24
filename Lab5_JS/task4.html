@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Завдання 4</title>
+</head>
+<body>
+    <h1>Завдання 4: Update та Delete</h1>
+    <script>
+        
+        const API_BASE_URL = "http://localhost/mock-server/api.php";
+        const speciesRepo = new ApiRepository(API_BASE_URL, "species_var17");
+        const enclosureRepo = new ApiRepository(API_BASE_URL, "enclosure_var17");
+        
+        async function task4() {
+            try {
+                const species = await speciesRepo.readAll();
+                const enclosures = await enclosureRepo.readAll();
+
+                if (species.length >= 2) {
+                    // Оновлюємо перший вид
+                    const updatedSpecies = await speciesRepo.update(species[0].id, { lifespan: 25, habitat: "Зоопарк оновлено" });
+                    console.log("Оновлено вид:", updatedSpecies);
+
+                    // Видаляємо другий вид
+                    await speciesRepo.delete(species[1].id);
+                    console.log(`Видалено вид з id: ${species[1].id}`);
+                }
+
+                if (enclosures.length >= 2) {
+                    // Оновлюємо перше приміщення
+                    const updatedEnclosure = await enclosureRepo.update(enclosures[0].id, { area: 1000, hasPool: true });
+                    console.log("Оновлено приміщення:", updatedEnclosure);
+
+                    // Видаляємо друге приміщення
+                    await enclosureRepo.delete(enclosures[1].id);
+                    console.log(`Видалено приміщення з id: ${enclosures[1].id}`);
+                }
+
+                console.log("Стан серверу після змін:");
+                console.log("Види:", await speciesRepo.readAll());
+                console.log("Приміщення:", await enclosureRepo.readAll());
+
+            } catch (error) {
+                console.error("Помилка у завданні 4:", error.message);
+            }
+        }
+        task4();
+    </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Завдання 5</title>
+</head>
+<body>
+    <h1>Завдання 5: Багато до багатьох</h1>
+    <script>
+        
+        const API_BASE_URL = "http://localhost/mock-server/api.php";
+        const speciesRepo = new ApiRepository(API_BASE_URL, "species_var17");
+        const enclosureRepo = new ApiRepository(API_BASE_URL, "enclosure_var17");
+        const placementRepo = new ApiRepository(API_BASE_URL, "placement_var17");
+
+        async function task5() {
+            try {
+                // 1. Для демонстрації створюємо нові об'єкти, щоб точно був зв'язок на одне приміщення
+                const newSpecies = await speciesRepo.create({ name: "Тигр", family: "Котячі", lifespan: 12, habitat: "Джунглі" });
+                const sharedEnclosure = await enclosureRepo.create({ complexName: "Великі Котячі", roomNumber: 201, hasPool: true, area: 1200 });
+                
+                // Отримуємо існуючі види щоб додати їх у спільне приміщення
+                const allSpecies = await speciesRepo.readAll();
+                
+                await placementRepo.create({ animalCount: 2, placementDate: "2026-10-01", condition: "Відмінний", speciesId: newSpecies.id, enclosureId: sharedEnclosure.id });
+                if(allSpecies.length > 0) {
+                    await placementRepo.create({ animalCount: 3, placementDate: "2026-10-02", condition: "Відмінний", speciesId: allSpecies[0].id, enclosureId: sharedEnclosure.id });
+                }
+
+                // 2. Витягуємо ВСІ дані з сервера
+                const speciesList = await speciesRepo.readAll();
+                const enclosureList = await enclosureRepo.readAll();
+                const placementList = await placementRepo.readAll();
+
+                console.log(`Шукаємо всі розміщення для приміщення з ID ${sharedEnclosure.id} (${sharedEnclosure.complexName}):`);
+                
+                // 3. Знаходимо відповідності
+                for (const placement of placementList) {
+                    if (placement.enclosureId === sharedEnclosure.id) {
+                        const relatedSpecies = speciesList.find(s => s.id === placement.speciesId);
+                        if (relatedSpecies) {
+                            console.log(`- Вид: ${relatedSpecies.name} (К-ть: ${placement.animalCount}), Стан вольєру: ${placement.condition}`);
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error("Помилка у завданні 5:", error.message);
+            }
+        }
+        task5();
+    </script>
+</body>
+</html>

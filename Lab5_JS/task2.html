@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Завдання 2</title>
+</head>
+<body>
+    <h1>Завдання 2: Екземпляри репозиторіїв</h1>
+    <script>
+        
+        const API_BASE_URL = "http://localhost/mock-server/api.php";
+        const speciesRepo = new ApiRepository(API_BASE_URL, "species_var17");
+        const enclosureRepo = new ApiRepository(API_BASE_URL, "enclosure_var17");
+        const placementRepo = new ApiRepository(API_BASE_URL, "placement_var17");
+
+        console.log("Завдання 2: Створено 3 екземпляри ApiRepository (species_var17, enclosure_var17, placement_var17)");
+    </script>
+</body>
+</html>
