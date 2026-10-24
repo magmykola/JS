@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна 3 - Завдання 5</title>
+</head>
+<body>
+    <script>
+        'use strict';
+        const speciesData = [
+            { id: 1, name: "Лев африканський", family: "Котові", lifespan: 15, habitat: "Савана" },
+            { id: 2, name: "Пінгвін імператорський", family: "Пінгвінові", lifespan: 20, habitat: "Антарктика" },
+            { id: 3, name: "Слон індійський", family: "Слонові", lifespan: 60, habitat: "Тропічні ліси" }
+        ];
+
+        function printSpecies(speciesList) {
+            for (const species of speciesList) {
+                console.log(`[ID: ${species.id}] ${species.name} (родина ${species.family}), життя: ${species.lifespan} р., середовище: ${species.habitat}`);
+            }
+        }
+
+        function createSpecies(speciesList, newSpecies) { return [...speciesList, newSpecies]; }
+        function readSpeciesById(speciesList, id) { return speciesList.find(species => species.id === id); }
+        function readSpeciesByFamily(speciesList, family) { return speciesList.filter(species => species.family === family); }
+        function updateSpecies(speciesList, id, changes) { return speciesList.map(species => (species.id === id ? { ...species, ...changes } : species)); }
+        function deleteSpecies(speciesList, id) { return speciesList.filter(species => species.id !== id); }
+
+        console.log("--- Початковий масив ---");
+        printSpecies(speciesData);
+
+        console.log("\n--- 1. Після Create ---");
+        const afterCreate = createSpecies(speciesData, {
+            id: 4, name: "Ведмідь білий", family: "Ведмедеві", lifespan: 25, habitat: "Арктика"
+        });
+        printSpecies(afterCreate);
+
+        console.log("\n--- 2. Read за ID 2 ---");
+        const foundItem = readSpeciesById(afterCreate, 2);
+        console.log(foundItem);
+
+        console.log("\n--- 3. Після Update (змінюємо ID 1) ---");
+        const afterUpdate = updateSpecies(afterCreate, 1, { lifespan: 18, habitat: "Зоопарк" });
+        printSpecies(afterUpdate);
+
+        console.log("\n--- 4. Після Delete (видаляємо ID 3) ---");
+        const afterDelete = deleteSpecies(afterUpdate, 3);
+        printSpecies(afterDelete);
+
+        console.log("\n--- 5. Перевірка незмінності вихідного масиву ---");
+        console.log("Довжина початкового масиву (speciesData) залишилась 3:", speciesData.length === 3);
+    </script>
+</body>
+</html>

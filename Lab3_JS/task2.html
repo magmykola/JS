@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна 3 - Завдання 2</title>
+</head>
+<body>
+    <script>
+        'use strict';
+        const speciesData = [
+            { id: 1, name: "Лев африканський", family: "Котові", lifespan: 15, habitat: "Савана" },
+            { id: 2, name: "Пінгвін імператорський", family: "Пінгвінові", lifespan: 20, habitat: "Антарктика" },
+            { id: 3, name: "Слон індійський", family: "Слонові", lifespan: 60, habitat: "Тропічні ліси" },
+            { id: 4, name: "Тигр бенгальський", family: "Котові", lifespan: 15, habitat: "Джунглі" }
+        ];
+
+        function readSpeciesById(speciesList, id) {
+            return speciesList.find(species => species.id === id);
+        }
+
+        function readSpeciesByFamily(speciesList, family) {
+            return speciesList.filter(species => species.family === family);
+        }
+
+        console.log("--- Завдання 2: Пошук елемента з ID 2 (find) ---");
+        const item = readSpeciesById(speciesData, 2);
+        console.log(`Знайдено: [ID: ${item.id}] ${item.name} (родина ${item.family})`);
+
+        console.log("--- Завдання 2: Фільтрація за родиною 'Котові' (filter) ---");
+        const cats = readSpeciesByFamily(speciesData, "Котові");
+        console.log(cats);
+    </script>
+</body>
+</html>

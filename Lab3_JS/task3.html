@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна 3 - Завдання 3</title>
+</head>
+<body>
+    <script>
+        'use strict';
+        const speciesData = [
+            { id: 1, name: "Лев африканський", family: "Котові", lifespan: 15, habitat: "Савана" },
+            { id: 2, name: "Пінгвін імператорський", family: "Пінгвінові", lifespan: 20, habitat: "Антарктика" },
+            { id: 3, name: "Слон індійський", family: "Слонові", lifespan: 60, habitat: "Тропічні ліси" }
+        ];
+
+        function printSpecies(speciesList) {
+            for (const species of speciesList) {
+                console.log(`[ID: ${species.id}] ${species.name} (родина ${species.family}), життя: ${species.lifespan} р., середовище: ${species.habitat}`);
+            }
+        }
+
+        function updateSpecies(speciesList, id, changes) {
+            return speciesList.map(species => (species.id === id ? { ...species, ...changes } : species));
+        }
+
+        console.log("--- Завдання 3: Оновлення елемента з ID 1 (Update) ---");
+        const afterUpdate = updateSpecies(speciesData, 1, { lifespan: 18, habitat: "Зоопарк" });
+        printSpecies(afterUpdate);
+    </script>
+</body>
+</html>

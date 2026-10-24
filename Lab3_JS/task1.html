@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна 3 - Завдання 1</title>
+</head>
+<body>
+    <script>
+        'use strict';
+        const speciesData = [
+            { id: 1, name: "Лев африканський", family: "Котові", lifespan: 15, habitat: "Савана" },
+            { id: 2, name: "Пінгвін імператорський", family: "Пінгвінові", lifespan: 20, habitat: "Антарктика" },
+            { id: 3, name: "Слон індійський", family: "Слонові", lifespan: 60, habitat: "Тропічні ліси" }
+        ];
+
+        function printSpecies(speciesList) {
+            for (const species of speciesList) {
+                console.log(`[ID: ${species.id}] ${species.name} (родина ${species.family}), життя: ${species.lifespan} р., середовище: ${species.habitat}`);
+            }
+        }
+
+        function createSpecies(speciesList, newSpecies) {
+            return [...speciesList, newSpecies];
+        }
+
+        console.log("--- Завдання 1: Додавання нового елемента (Create) ---");
+        const afterCreate = createSpecies(speciesData, {
+            id: 4, name: "Ведмідь білий", family: "Ведмедеві", lifespan: 25, habitat: "Арктика"
+        });
+        printSpecies(afterCreate);
+    </script>
+</body>
+</html>

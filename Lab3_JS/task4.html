@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна 3 - Завдання 4</title>
+</head>
+<body>
+    <script>
+        'use strict';
+        const speciesData = [
+            { id: 1, name: "Лев африканський", family: "Котові", lifespan: 15, habitat: "Савана" },
+            { id: 2, name: "Пінгвін імператорський", family: "Пінгвінові", lifespan: 20, habitat: "Антарктика" },
+            { id: 3, name: "Слон індійський", family: "Слонові", lifespan: 60, habitat: "Тропічні ліси" }
+        ];
+
+        function printSpecies(speciesList) {
+            for (const species of speciesList) {
+                console.log(`[ID: ${species.id}] ${species.name} (родина ${species.family}), життя: ${species.lifespan} р., середовище: ${species.habitat}`);
+            }
+        }
+
+        function deleteSpecies(speciesList, id) {
+            return speciesList.filter(species => species.id !== id);
+        }
+
+        console.log("--- Завдання 4: Видалення елемента з ID 2 (Delete) ---");
+        const afterDelete = deleteSpecies(speciesData, 2);
+        printSpecies(afterDelete);
+    </script>
+</body>
+</html>
