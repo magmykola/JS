@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Завдання 1</title>
+</head>
+<body>
+    <script>
+        class Species {
+            constructor(data) {
+                this.id = data.id;
+                this.name = data.name; // Назва виду
+                this.family = data.family; // Родина
+                this.lifespan = data.lifespan; // Тривалість життя
+                this.habitat = data.habitat; // Середовище проживання
+            }
+        }
+
+        class Enclosure {
+            constructor(data) {
+                this.id = data.id;
+                this.complexName = data.complexName; // Назва комплекса
+                this.roomNumber = data.roomNumber; // № приміщення
+                this.hasPool = data.hasPool; // Наявність водойми
+                this.area = data.area; // Площа
+            }
+        }
+
+        class Placement {
+            constructor(data) {
+                this.id = data.id;
+                this.speciesId = data.speciesId; // Зв'язок з лівою сутністю
+                this.enclosureId = data.enclosureId; // Зв'язок з правою сутністю
+                this.animalCount = data.animalCount; // Кількість тварин
+                this.placementDate = data.placementDate; // Дата розміщення
+                this.enclosureStatus = data.enclosureStatus; // Стан вольєру
+            }
+        }
+
+        console.log("Завдання 1: Класи успішно створено.");
+
+
+
+        class Repository {
+            #items = [];
+            #lastId = 0;
+            
+            constructor() {
+                this.#items = [];
+                this.#lastId = 0;
+            }
+            
+            create(item) {
+                if(!item.id) item.id = ++this.#lastId;
+                this.#items.push(item);
+                return item;
+            }
+            
+            readById(id) {
+                return this.#items.find(item => item.id === id);
+            }
+            
+            readAll() {
+                return [...this.#items];
+            }
+            
+            update(id, changes) {
+                const item = this.readById(id);
+                if (item) Object.assign(item, changes);
+                return item;
+            }
+            
+            delete(id) {
+                this.#items = this.#items.filter(item => item.id !== id);
+            }
+        }
+
+        const speciesRepo = new Repository();
+        const enclosureRepo = new Repository();
+        const placementRepo = new Repository();
+
+        console.log("Завдання 2: Репозиторії створено.", {speciesRepo, enclosureRepo, placementRepo});
+
+        // Наповнення видів
+        speciesRepo.create(new Species({id: 1, name: 'Лев Африканський', family: 'Котові', lifespan: 15, habitat: 'Савана'}));
+        speciesRepo.create(new Species({id: 2, name: 'Слон Індійський', family: 'Слонові', lifespan: 60, habitat: 'Тропічний ліс'}));
+        speciesRepo.create(new Species({id: 3, name: 'Пінгвін Імператорський', family: 'Пінгвінові', lifespan: 20, habitat: 'Антарктика'}));
+
+        // Наповнення приміщень
+        enclosureRepo.create(new Enclosure({id: 1, complexName: 'Сафарі', roomNumber: 101, hasPool: false, area: 500}));
+        enclosureRepo.create(new Enclosure({id: 2, complexName: 'Тропіки', roomNumber: 102, hasPool: true, area: 800}));
+        enclosureRepo.create(new Enclosure({id: 3, complexName: 'Полярний світ', roomNumber: 201, hasPool: true, area: 300}));
+
+        // Наповнення розміщень (зв'язків)
+        placementRepo.create(new Placement({id: 1, speciesId: 1, enclosureId: 1, animalCount: 3, placementDate: '2025-05-10', enclosureStatus: 'Відмінний'}));
+        placementRepo.create(new Placement({id: 2, speciesId: 2, enclosureId: 2, animalCount: 2, placementDate: '2025-06-15', enclosureStatus: 'Задовільний'}));
+        placementRepo.create(new Placement({id: 3, speciesId: 1, enclosureId: 2, animalCount: 1, placementDate: '2026-01-20', enclosureStatus: 'Ремонт'})); // Лев тимчасово в іншому вольєрі
+
+        console.log("Види:", speciesRepo.readAll());
+        console.log("Приміщення:", enclosureRepo.readAll());
+        console.log("Розміщення:", placementRepo.readAll());
+
+
+
+
+        console.log("Завдання 4: Демонстрація зв'язку 'багато до багатьох'");
+        console.log("Усі приміщення, де розміщено вид 'Лев Африканський' (ID: 1):");
+        
+        const lionPlacements = placementRepo.readAll().filter(p => p.speciesId === 1);
+        
+        lionPlacements.forEach(placement => {
+            const enclosure = enclosureRepo.readById(placement.enclosureId);
+            console.log(`- Комплекс: ${enclosure.complexName}, Кімната: ${enclosure.roomNumber}, Кількість тварин: ${placement.animalCount}, Стан: ${placement.enclosureStatus}`);
+        });
+
+
+
+        console.log("Завдання 5: Демонстрація CRUD");
+
+        // Create
+        console.log("--- CREATE ---");
+        const newPlacement = placementRepo.create(new Placement({id: 4, speciesId: 3, enclosureId: 3, animalCount: 5, placementDate: '2026-10-24', enclosureStatus: 'Новий'}));
+        console.log("Додано нове розміщення:", newPlacement);
+        console.log("Стан масиву:", placementRepo.readAll());
+
+        // Read
+        console.log("--- READ ---");
+        const found = placementRepo.readById(4);
+        console.log("Знайдено розміщення за ID 4:", found);
+
+        // Update
+        console.log("--- UPDATE ---");
+        const updated = placementRepo.update(4, { animalCount: 6, enclosureStatus: 'Оновлений' });
+        console.log("Оновлено розміщення (ID 4):", updated);
+        console.log("Стан масиву:", placementRepo.readAll());
+
+        // Delete
+        console.log("--- DELETE ---");
+        placementRepo.delete(4);
+        console.log("Видалено розміщення з ID 4.");
+        console.log("Кінцевий стан масиву:", placementRepo.readAll());
+    </script>
+</body>
+</html>

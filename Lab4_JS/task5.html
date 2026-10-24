@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Завдання 5</title>
+</head>
+<body>
+    <script>
+        console.log("Завдання 5: Демонстрація CRUD");
+
+        // Create
+        console.log("--- CREATE ---");
+        const newPlacement = placementRepo.create(new Placement({id: 4, speciesId: 3, enclosureId: 3, animalCount: 5, placementDate: '2026-10-24', enclosureStatus: 'Новий'}));
+        console.log("Додано нове розміщення:", newPlacement);
+        console.log("Стан масиву:", placementRepo.readAll());
+
+        // Read
+        console.log("--- READ ---");
+        const found = placementRepo.readById(4);
+        console.log("Знайдено розміщення за ID 4:", found);
+
+        // Update
+        console.log("--- UPDATE ---");
+        const updated = placementRepo.update(4, { animalCount: 6, enclosureStatus: 'Оновлений' });
+        console.log("Оновлено розміщення (ID 4):", updated);
+        console.log("Стан масиву:", placementRepo.readAll());
+
+        // Delete
+        console.log("--- DELETE ---");
+        placementRepo.delete(4);
+        console.log("Видалено розміщення з ID 4.");
+        console.log("Кінцевий стан масиву:", placementRepo.readAll());
+    </script>
+</body>
+</html>

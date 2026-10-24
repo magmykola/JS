@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Завдання 1</title>
+</head>
+<body>
+    <script>
+        class Species {
+            constructor(data) {
+                this.id = data.id;
+                this.name = data.name; // Назва виду
+                this.family = data.family; // Родина
+                this.lifespan = data.lifespan; // Тривалість життя
+                this.habitat = data.habitat; // Середовище проживання
+            }
+        }
+
+        class Enclosure {
+            constructor(data) {
+                this.id = data.id;
+                this.complexName = data.complexName; // Назва комплекса
+                this.roomNumber = data.roomNumber; // № приміщення
+                this.hasPool = data.hasPool; // Наявність водойми
+                this.area = data.area; // Площа
+            }
+        }
+
+        class Placement {
+            constructor(data) {
+                this.id = data.id;
+                this.speciesId = data.speciesId; // Зв'язок з лівою сутністю
+                this.enclosureId = data.enclosureId; // Зв'язок з правою сутністю
+                this.animalCount = data.animalCount; // Кількість тварин
+                this.placementDate = data.placementDate; // Дата розміщення
+                this.enclosureStatus = data.enclosureStatus; // Стан вольєру
+            }
+        }
+
+        console.log("Завдання 1: Класи успішно створено.");
+    </script>
+</body>
+</html>

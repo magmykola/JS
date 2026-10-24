@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Завдання 4</title>
+</head>
+<body>
+    <script>
+        console.log("Завдання 4: Демонстрація зв'язку 'багато до багатьох'");
+        console.log("Усі приміщення, де розміщено вид 'Лев Африканський' (ID: 1):");
+        
+        const lionPlacements = placementRepo.readAll().filter(p => p.speciesId === 1);
+        
+        lionPlacements.forEach(placement => {
+            const enclosure = enclosureRepo.readById(placement.enclosureId);
+            console.log(`- Комплекс: ${enclosure.complexName}, Кімната: ${enclosure.roomNumber}, Кількість тварин: ${placement.animalCount}, Стан: ${placement.enclosureStatus}`);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Завдання 2</title>
+</head>
+<body>
+    <script>
+        class Repository {
+            #items = [];
+            #lastId = 0;
+            
+            constructor() {
+                this.#items = [];
+                this.#lastId = 0;
+            }
+            
+            create(item) {
+                if(!item.id) item.id = ++this.#lastId;
+                this.#items.push(item);
+                return item;
+            }
+            
+            readById(id) {
+                return this.#items.find(item => item.id === id);
+            }
+            
+            readAll() {
+                return [...this.#items];
+            }
+            
+            update(id, changes) {
+                const item = this.readById(id);
+                if (item) Object.assign(item, changes);
+                return item;
+            }
+            
+            delete(id) {
+                this.#items = this.#items.filter(item => item.id !== id);
+            }
+        }
+
+        const speciesRepo = new Repository();
+        const enclosureRepo = new Repository();
+        const placementRepo = new Repository();
+
+        console.log("Завдання 2: Репозиторії створено.", {speciesRepo, enclosureRepo, placementRepo});
+    </script>
+</body>
+</html>
