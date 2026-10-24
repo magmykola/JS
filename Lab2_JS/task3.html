@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна 2 - Завдання 3</title>
+</head>
+<body>
+    <script>
+        'use strict';
+        console.log('Starting task 3');
+        
+        const yA = [-3.3, -1.1, 2.2, -4.4, 5.5, -6.6, 7.7];
+        let firstPosIndex = -1;
+        
+        for (let i = 0; i < yA.length; i++) {
+            if (yA[i] > 0) {
+                firstPosIndex = i;
+                break;
+            }
+        }
+        
+        if (firstPosIndex !== -1) {
+            console.log(`Номер першого додатного елемента: ${firstPosIndex + 1}`);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна 2 - Завдання 4 та 5</title>
+</head>
+<body>
+    <script>
+        'use strict';
+        console.log('Starting task 4');
+        
+        const speciesData = [
+            {
+                name: "Лев африканський",
+                family: "Котові",
+                lifespan: 15,
+                habitat: "Савана"
+            },
+            {
+                name: "Пінгвін імператорський",
+                family: "Пінгвінові",
+                lifespan: 20,
+                habitat: "Антарктика"
+            },
+            {
+                name: "Слон індійський",
+                family: "Слонові",
+                lifespan: 60,
+                habitat: "Тропічні ліси"
+            }
+        ];
+
+        for (const species of speciesData) {
+            console.log(`Вид: ${species.name}, родина: ${species.family}, тривалість життя: ${species.lifespan} років, середовище проживання: ${species.habitat}`);
+        }
+    </script>
+</body>
+</html>
